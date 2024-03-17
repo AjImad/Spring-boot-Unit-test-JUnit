@@ -22,4 +22,8 @@ public class StudentController {
         return studentService.retrieveCourses(studentId);
     }
 
+    @GetMapping("/{studentId}/courses/{courseId}")
+    public Course retrieveDetailsForCourse(@PathVariable String studentId, @PathVariable String courseId){
+        return studentService.retrieveCourse(studentId, courseId);
+    }
 }

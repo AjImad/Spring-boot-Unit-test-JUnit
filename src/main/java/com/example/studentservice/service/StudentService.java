@@ -54,4 +54,15 @@ public class StudentService {
         System.out.println("Student: " + student);
         return student == null ? null : student.getCourses();
     }
+
+    public Course retrieveCourse(String studentId, String courseId) {
+        Student student = retrieveStudent(studentId);
+        if(student == null) return null;
+        for(Course course: student.getCourses()){
+            if(course.getId().equals(courseId)){
+                return course;
+            }
+        }
+        return null;
+    }
 }
