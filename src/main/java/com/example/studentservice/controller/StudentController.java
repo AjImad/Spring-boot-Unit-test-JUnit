@@ -1,13 +1,15 @@
 package com.example.studentservice.controller;
 
 import com.example.studentservice.model.Course;
+import com.example.studentservice.model.Student;
 import com.example.studentservice.service.StudentService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -25,5 +27,22 @@ public class StudentController {
     @GetMapping("/{studentId}/courses/{courseId}")
     public Course retrieveDetailsForCourse(@PathVariable String studentId, @PathVariable String courseId){
         return studentService.retrieveCourse(studentId, courseId);
+    }
+
+    @PostMapping("/{studentId}/courses")
+    public ResponseEntity<Void> registerStudentForCourse(
+            @PathVariable String studentId, @RequestBody Course course
+    ){
+        Course newCourse = studentService.addCourse(studentId, course);
+
+        if(newCourse == null)
+            return ResponseEntity.noContent().build();
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(course.getId())
+                .toUri();
+
+        return ResponseEntity.created(location)
+                .build();
     }
 }

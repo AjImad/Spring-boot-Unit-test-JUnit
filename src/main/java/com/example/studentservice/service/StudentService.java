@@ -4,6 +4,7 @@ import com.example.studentservice.model.Course;
 import com.example.studentservice.model.Student;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,5 +65,14 @@ public class StudentService {
             }
         }
         return null;
+    }
+
+    public Course addCourse(String studentId, Course course) {
+        Student student = retrieveStudent(studentId);
+        if(student == null) return null;
+        String randomId = new BigInteger(130, random).toString(32);
+        course.setId(randomId);
+        student.getCourses().add(course);
+        return course;
     }
 }
