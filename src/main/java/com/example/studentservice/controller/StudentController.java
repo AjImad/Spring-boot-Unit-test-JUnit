@@ -39,7 +39,7 @@ public class StudentController {
             return ResponseEntity.noContent().build();
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(course.getId())
+                .buildAndExpand(newCourse.getId())
                 .toUri();
 
         return ResponseEntity.created(location)
